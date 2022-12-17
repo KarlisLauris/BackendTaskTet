@@ -10,6 +10,7 @@ public class Conversion {
         this.conversionRate = conversionRate;
         this.date = date;
     }
+
     public Conversion(String currency, String conversionRate) {
         this.currency = currency;
         this.conversionRate = conversionRate;
@@ -35,7 +36,6 @@ public class Conversion {
     public String getDate() {
         return date;
     }
-
 
 
     @Override

@@ -12,17 +12,20 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 public class RSSParser {
     private final String url;
+
     public RSSParser(String url) {
         this.url = url;
     }
+
     public List<Conversion> parseRSS() {
         try {
             List<Conversion> currencies = new ArrayList<>();
             SyndFeedInput input = new SyndFeedInput();
             SyndFeed feed = input.build(new XmlReader(new URL(this.url)));
-            for (Object entry: feed.getEntries()) {
+            for (Object entry : feed.getEntries()) {
                 SyndEntry item = (SyndEntry) entry;
                 Date date = item.getPublishedDate();
                 String formattedDate = String.format("%tF", date);

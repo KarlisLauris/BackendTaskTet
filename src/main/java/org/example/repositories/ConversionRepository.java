@@ -11,27 +11,29 @@ import java.util.List;
 
 public class ConversionRepository {
     private final Connection connection;
+
     public ConversionRepository(Connection connection) {
         this.connection = connection;
     }
 
-    public List < Conversion > getLatestDataFromDatabase() throws SQLException {
-        try{
-        List < Conversion > conversions = new ArrayList< >();
-        String sql = "SELECT * FROM currencies WHERE date = (SELECT MAX(date) FROM currencies)";
-        PreparedStatement statement = this.connection.prepareStatement(sql);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            String date = resultSet.getString("date");
-            String currency = resultSet.getString("currency");
-            String conversionRate = resultSet.getString("conversionRate");
-            conversions.add(new Conversion(date, currency, conversionRate));
-        }
-        return conversions;
-    } catch (SQLException e) {
-        throw new RuntimeException(e);
+    public List<Conversion> getLatestDataFromDatabase() throws SQLException {
+        try {
+            List<Conversion> conversions = new ArrayList<>();
+            String sql = "SELECT * FROM currencies WHERE date = (SELECT MAX(date) FROM currencies)";
+            PreparedStatement statement = this.connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String date = resultSet.getString("date");
+                String currency = resultSet.getString("currency");
+                String conversionRate = resultSet.getString("conversionRate");
+                conversions.add(new Conversion(date, currency, conversionRate));
+            }
+            return conversions;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
+
     public void saveToDatabase(List<Conversion> currencies) throws SQLException {
         try {
             for (Conversion conversion : currencies) {
@@ -54,7 +56,8 @@ public class ConversionRepository {
             throw new RuntimeException(e);
         }
     }
-    public void createTable(){
+
+    public void createTable() {
         try {
             String sql = "CREATE TABLE IF NOT EXISTS currencies (date VARCHAR(255), currency VARCHAR(255), conversionRate VARCHAR(255))";
             PreparedStatement statement = this.connection.prepareStatement(sql);
@@ -63,7 +66,8 @@ public class ConversionRepository {
             throw new RuntimeException(e);
         }
     }
-    public List <Conversion> getSpecificCurrencyData(String currency){
+
+    public List<Conversion> getSpecificCurrencyData(String currency) {
         List<Conversion> conversions = new ArrayList<>();
         try {
             String sql = "SELECT * FROM currencies WHERE currency = ?";
